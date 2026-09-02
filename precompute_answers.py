@@ -65,7 +65,7 @@ Question: {q}
 User Feedback:
 {context_str}
 """
-        models_to_try = ["gemini-2.5-flash-lite", "gemini-3-flash", "gemini-3.6-flash"]
+        models_to_try = ["gemini-3.5-flash-lite", "gemini-3.6-flash"]
         ans = None
         used_model = None
         max_retries = 3
@@ -100,6 +100,8 @@ User Feedback:
             print(f"Saved incremental progress for: {q}")
         else:
             print(f"Failed for query: {q}")
+            
+        time.sleep(2)
 
     print(f"Done! Fully computed: {len(precomputed)}/{len(queries)} questions.")
 

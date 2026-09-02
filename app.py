@@ -6,7 +6,7 @@ import google.generativeai as genai
 from sentence_transformers import util
 from utils import load_data, load_embedder, get_corpus_embeddings
 
-st.set_page_config(page_title="MyntraLens", page_icon="🛍️", layout="wide")
+st.set_page_config(page_title="MyntraLens", layout="wide")
 
 @st.cache_data(ttl=3600)
 def generate_rag_insight(active_query, context_str):
@@ -22,7 +22,7 @@ Question: {active_query}
 User Feedback:
 {context_str}
 """
-    models_to_try = ["gemini-2.5-flash-lite", "gemini-3-flash", "gemini-3.6-flash"]
+    models_to_try = ["gemini-3.5-flash-lite", "gemini-3.6-flash"]
     last_error = None
     
     for model_name in models_to_try:
@@ -287,7 +287,7 @@ try:
                                     text_out, model_used = generate_rag_insight(active_query, context_str)
                                     
                                     if text_out == "QUOTA_ERROR":
-                                        st.error("This demo has hit its free daily AI query limit — please try again in a few minutes, or explore the other tabs in the meantime.")
+                                        st.error("This question requires a live AI query and we've hit today's free quota. Try one of the other suggested questions above, which are pre-loaded and always available.")
                                     else:
                                         st.success(f"Analysis Complete (Powered by `{model_used}`)")
                                         st.markdown(text_out)

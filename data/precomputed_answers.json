@@ -12,5 +12,61 @@
             "Source 7 (play_store): Although the parcel was received one day late, it was without any reminder from me. The quality of the product is very good.",
             "Source 8 (play_store): I love this app but please bring back the category section in the wishlist"
         ]
+    },
+    "What delivery issues do users report most often?": {
+        "answer": "delivery service is smooth\", issue with COD availability for office",
+        "model": "gemini-3.6-flash",
+        "sources": [
+            "Source 1 (app_store): Delivery problems They are very bad at delivering products despite delayed don\u2019t have customers support. Very much disgusting from Myntra couldn\u2019t expected.",
+            "Source 2 (play_store): The delivery process is extremely slow . There are no proper options to contact or escalate your grievances. The delivery partners are irresponsible and taking their own time to deliver items and do false claims on delivery attempts made. Such an unprofessional approach from a famous platform where customer concern is highly pathetic.",
+            "Source 3 (play_store): one of the worst delivery apps i have every user",
+            "Source 4 (play_store): poor delivery, always delayed ,products are good but never reach on time. whenever we need something it's delayed delivery \ud83d\ude11. having very poor experience with this.",
+            "Source 5 (play_store): One of the worst delivery app which I have used, they are unable to deliver the product on time and customer care service doesn't even have proper tracking information regarding the product, I have ordered the product with express delivery service and it has not delivered & it got cancelled automatically. If the application company can't provide proper delivery service their should not mention expected delivery date. where ppl can choose other applications instead.",
+            "Source 6 (play_store): always making mistakes in every purchase, sometimes putting extra charge at the time of delivery, Maximum time sending wrong items ..",
+            "Source 7 (play_store): Good deliver, Best behaviour,",
+            "Source 8 (play_store): The best thing I felt so far is the delivery service is smooth. altho a certain feature feels annoying cuz I am office working guy, I can't be available at my home in case of COD. maybe if we get a feature in future"
+        ]
+    },
+    "What UX problems affect the wishlist feature?": {
+        "answer": "Based on the provided user feedback, the following UX problems",
+        "model": "gemini-3.6-flash",
+        "sources": [
+            "Source 1 (play_store): exploring wishlist, wishlisted , bookmark",
+            "Source 2 (play_store): There is a LIMIT on how many items you can add to your WISHLIST. I like to wishlist a lot to compare them with each other before deciding what to buy. This limit makes it harder to shortlist, and narrows down the options. I enjoy browsing through clothing and wishlisting items on myntra ,it\u2019s almost a hobby for me .Please consider increasing the limit or allowing users to wishlist unlimited items. 9/10 app Btw",
+            "Source 3 (play_store): app is extremely slow , it takes forever to search something and then lands on \"oops something went wrong\" (It is not my network issue). once clicked on any item, it opens as a 3/4th page pop up(shows double click to wishlist) - why do I need to put in wishlist, if I couldnt even see the photos properly.",
+            "Source 4 (play_store): I love this app but please bring back the category section in the wishlist",
+            "Source 5 (play_store): Remove Wishlist Limit",
+            "Source 6 (reddit): Show me ur Myntra wishlist",
+            "Source 7 (reddit): Myntra Shopping & Wishlist Habits \u2014 Quick Survey form",
+            "Source 8 (play_store): Great collection and prompt response if there are any issues."
+        ]
+    },
+    "What causes the most return and refund complaints?": {
+        "answer": "Based on the provided user feedback, the causes and issues related to returns and refunds include:\n\n* **Missing, Wrong, or Damaged Products:** Customers report receiving missing products (Source 1), wrong products (Sources 4 and 7), and completely wrong or damaged products instead of what was ordered (Source 7).\n* **Return Policy and System Issues:** Users complain about poor and \"rubbish\" return policies and systems (Sources 2 and 3). Specific pain points include refusal to process returns even when a policy exists (Source 4), forcing customers to pay return charges/fees for the seller's mistakes (Source 7), and restricting options to exchanges only rather than refunds (Source 7).\n* **Uncredited Refunds:** Users report issues where the system or customer service indicates that refund money has been transferred, but the funds are actually never credited to the customer (Sources 1 and 8). Furthermore, customers are provided with reference numbers and told to check with their banks, causing frustration and wasted time and money (Source 8). \n* **Customer Care Inadequacies:** Poor, slow, and rigid customer service further exacerbates return and refund complaints (Sources 1, 2, and 3), with issues being falsely marked as resolved without actually being fixed (Source 1).",
+        "model": "gemini-3.5-flash-lite",
+        "sources": [
+            "Source 1 (play_store): we have to continuously report a single issue multiple times but still they do not care about your concern. without resolving the issue they just show that the issue has been resolved. the products were missing. and also when you get refund for a return item the money is shown that it has been transferred but actually it has not been transferred. the customer care service is too slow, and very rigid.",
+            "Source 2 (play_store): return policy is very poor and customer service is not good",
+            "Source 3 (play_store): customer care is just name sake and return policy and the return system is rubbbish",
+            "Source 4 (play_store): providing wrong products after that they are not preparing any return...even though they have return policy",
+            "Source 5 (play_store): always good service when I raise return item same time I got refund",
+            "Source 6 (play_store): good quality good return policy",
+            "Source 7 (app_store): Forcing Customer for Return Charges Received a completely wrong and damaged product instead of what I ordered. To make things worse, when I tried to return it, Myntra deducted a \u20b950 return fee and is only allowing an exchange, not a refund. Why should a customer pay a penalty for the seller's mistake? Extremely disappointed with this unfair policy",
+            "Source 8 (play_store): Their refund policy is very poor. They provide a reference number for refunds that haven\u2019t been credited and ask customers to check with their bank. This wastes both time and money. In my case, I have to travel 200 km to my hometown bank just to check why my refund hasn\u2019t been credited."
+        ]
+    },
+    "Do users trust Myntra's product authenticity?": {
+        "answer": "Based on the provided user feedback, users generally have a high level of trust in Myntra's product authenticity. Specifically:\n\n* **Source 1 (app_store)** and **Source 3 (play_store)** both explicitly state that users feel they can trust Myntra to provide genuine products.\n* **Source 2 (play_store)** and **Source 7 (play_store)** confirm that the platform consistently delivers genuine products.\n* **Source 4 (play_store)** notes that the products are of genuine quality and expresses full assurance in anything Myntra sells. \n* **Source 5 (play_store)** simply affirms that Myntra sells genuine products.\n* **Source 6 (play_store)** describes Myntra overall as a trustworthy brand.\n* **Source 8 (play_store)** highlights that the app offers authentic brands and original products based on the user's past purchases.",
+        "model": "gemini-3.5-flash-lite",
+        "sources": [
+            "Source 1 (app_store): Trusted I can trust Myntra , for the quality and genuine product",
+            "Source 2 (play_store): genuine products delivered by Myntra",
+            "Source 3 (play_store): can trust for genuine products",
+            "Source 4 (play_store): Products on Myntra are always amazing and of genuine quality, if myntra is selling something then I am assured that it will be a quality material. Services of myntra and policies are matchless in the market. at last...I will say..Leave all, join Myntra.",
+            "Source 5 (play_store): myntra sells genuine products.",
+            "Source 6 (play_store): myntra is a trustworthy brand",
+            "Source 7 (play_store): Always Genuine products delivered by Myntra...Thanx Myntra team",
+            "Source 8 (play_store): i have purchase many products on this app all product was awesome I suggest other people for purchase items from myntra app. authentic brands original products and the quality is very good of all products."
+        ]
     }
 }
