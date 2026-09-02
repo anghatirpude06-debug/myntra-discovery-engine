@@ -1,0 +1,16 @@
+{
+    "Why do users hesitate before buying wishlisted items?": {
+        "answer": "App is slow, doesn't load photos properly before",
+        "model": "gemini-3.6-flash",
+        "sources": [
+            "Source 1 (play_store): There is a LIMIT on how many items you can add to your WISHLIST. I like to wishlist a lot to compare them with each other before deciding what to buy. This limit makes it harder to shortlist, and narrows down the options. I enjoy browsing through clothing and wishlisting items on myntra ,it\u2019s almost a hobby for me .Please consider increasing the limit or allowing users to wishlist unlimited items. 9/10 app Btw",
+            "Source 2 (reddit): Myntra Shopping & Wishlist Habits \u2014 Quick Survey form",
+            "Source 3 (play_store): Remove Wishlist Limit",
+            "Source 4 (play_store): exploring wishlist, wishlisted , bookmark",
+            "Source 5 (play_store): app is extremely slow , it takes forever to search something and then lands on \"oops something went wrong\" (It is not my network issue). once clicked on any item, it opens as a 3/4th page pop up(shows double click to wishlist) - why do I need to put in wishlist, if I couldnt even see the photos properly.",
+            "Source 6 (play_store): Sometimes it becomes very difficult to order from this, as soon as you go to order, the prices increase, this is a very bad thing, otherwise the shopping platform is quite good, it sends 10 out of 10 very good items.",
+            "Source 7 (play_store): Although the parcel was received one day late, it was without any reminder from me. The quality of the product is very good.",
+            "Source 8 (play_store): I love this app but please bring back the category section in the wishlist"
+        ]
+    }
+}
