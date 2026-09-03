@@ -1,7 +1,7 @@
 {
     "Why do users hesitate before buying wishlisted items?": {
-        "answer": "App is slow, doesn't load photos properly before",
-        "model": "gemini-3.6-flash",
+        "answer": "Based on the provided user feedback, users hesitate before purchasing wishlisted items for several reasons:\n\n* **Wishlist Limits**: Users enjoy wishlisting many items to compare them before deciding, but an arbitrary limit on the number of items restricts their ability to shortlist (Source 1).\n* **Technical Issues & Speed**: The app is frequently reported as extremely slow, failing to load photos properly or throwing errors when users try to view items (Source 5).\n* **Dynamic Pricing**: Users note that prices sometimes increase right at the moment they attempt to order, causing frustration and hesitation (Source 6).",
+        "model": "gemini-1.5-flash",
         "sources": [
             "Source 1 (play_store): There is a LIMIT on how many items you can add to your WISHLIST. I like to wishlist a lot to compare them with each other before deciding what to buy. This limit makes it harder to shortlist, and narrows down the options. I enjoy browsing through clothing and wishlisting items on myntra ,it\u2019s almost a hobby for me .Please consider increasing the limit or allowing users to wishlist unlimited items. 9/10 app Btw",
             "Source 2 (reddit): Myntra Shopping & Wishlist Habits \u2014 Quick Survey form",
@@ -14,8 +14,8 @@
         ]
     },
     "What delivery issues do users report most often?": {
-        "answer": "delivery service is smooth\", issue with COD availability for office",
-        "model": "gemini-3.6-flash",
+        "answer": "Users report a variety of delivery issues, most commonly:\n\n* **Severe Delays**: Delivery processes are frequently described as extremely slow or always delayed, with products often failing to reach customers on time even when express delivery is chosen (Sources 1, 2, 4, 5).\n* **Unprofessional Delivery Partners**: Users complain about irresponsible delivery partners who make false claims about attempted deliveries (Source 2).\n* **Order Errors & Extra Charges**: Customers note mistakes such as receiving the wrong items or being asked to pay extra, unexpected charges at the time of delivery (Source 6).\n* **Lack of Tracking & Support**: There are complaints about inadequate customer support and a lack of proper tracking information for delayed or automatically cancelled orders (Sources 1, 5).\n* **COD Friction**: Even when delivery is smooth, cash-on-delivery (COD) options can be problematic for working professionals who are not home during delivery hours (Source 8).",
+        "model": "gemini-1.5-flash",
         "sources": [
             "Source 1 (app_store): Delivery problems They are very bad at delivering products despite delayed don\u2019t have customers support. Very much disgusting from Myntra couldn\u2019t expected.",
             "Source 2 (play_store): The delivery process is extremely slow . There are no proper options to contact or escalate your grievances. The delivery partners are irresponsible and taking their own time to deliver items and do false claims on delivery attempts made. Such an unprofessional approach from a famous platform where customer concern is highly pathetic.",
@@ -28,8 +28,8 @@
         ]
     },
     "What UX problems affect the wishlist feature?": {
-        "answer": "Based on the provided user feedback, the following UX problems",
-        "model": "gemini-3.6-flash",
+        "answer": "Based on user feedback, several User Experience (UX) problems affect the wishlist feature:\n\n* **Item Limits**: There is a strict limit on how many items can be wishlisted, which frustrates users who use the feature to compare multiple items before making a purchase decision (Source 2).\n* **Missing Organization Features**: The removal of the category section within the wishlist has made it difficult for users to organize and find their saved items (Source 4).\n* **Intrusive Popups & Slow Loading**: Users report that clicking on items often triggers intrusive 3/4-page pop-ups prompting them to wishlist, while the app itself is extremely slow and fails to load the actual product photos properly (Source 3).",
+        "model": "gemini-1.5-flash",
         "sources": [
             "Source 1 (play_store): exploring wishlist, wishlisted , bookmark",
             "Source 2 (play_store): There is a LIMIT on how many items you can add to your WISHLIST. I like to wishlist a lot to compare them with each other before deciding what to buy. This limit makes it harder to shortlist, and narrows down the options. I enjoy browsing through clothing and wishlisting items on myntra ,it\u2019s almost a hobby for me .Please consider increasing the limit or allowing users to wishlist unlimited items. 9/10 app Btw",

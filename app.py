@@ -15,14 +15,15 @@ def generate_rag_insight(active_query, context_str):
     
     prompt = f"""
 You are a lead UX researcher. Answer the following question synthesizing only the provided user feedback.
-Make sure to reference your sources (e.g., "Based on Source 1...").
+Write a natural, flowing paragraph answer (2-4 sentences) that synthesizes the findings conversationally.
+Do not use inline citation markers (like "Source 1", "Source 2") and do not list citations in the prose.
 
 Question: {active_query}
 
 User Feedback:
 {context_str}
 """
-    models_to_try = ["gemini-3.5-flash-lite", "gemini-3.6-flash"]
+    models_to_try = ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-2.5-flash"]
     last_error = None
     
     for model_name in models_to_try:
@@ -43,44 +44,41 @@ User Feedback:
 
 LIGHT_CSS = """
 <style>
-    h1, h2, h3, h4, h5, h6 { color: #282C3F !important; }
-    body, p, div { color: #282C3F; }
-    .sub-label, small, .stCaption { color: #6B7280 !important; }
+    html, body, [class*="css"] { font-size: 15px !important; }
+    h1 { font-size: 28px !important; font-weight: 700 !important; color: #29303E !important; }
+    h2 { font-size: 24px !important; font-weight: 700 !important; color: #29303E !important; }
+    h3 { font-size: 20px !important; font-weight: 600 !important; color: #29303E !important; }
+    h4 { font-size: 16px !important; font-weight: 600 !important; color: #29303E !important; }
+    h5, h6 { color: #29303E !important; }
+    body, p, div { color: #5A6172; }
+    .sub-label, small, .stCaption { color: #6B7280 !important; font-size: 13px !important; }
     
-    .top-banner { background: linear-gradient(135deg, rgba(245, 8, 139, 0.05), rgba(255, 122, 26, 0.05)); border-left: 6px solid #F5088B; padding: 20px; border-radius: 8px; margin-bottom: 20px; width: 100%; box-sizing: border-box; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; min-height: 80px; }
-    .top-banner h4 { color: #282C3F !important; margin-top: 0; font-size: 18px; line-height: 1.7; }
+    .top-banner { background: #F7F8FA; border-left: 4px solid #F13AB1; padding: 28px 32px; border-radius: 0 0 24px 24px; box-shadow: 0 8px 16px rgba(0,0,0,0.15); margin-bottom: 24px; margin-top: 0; width: 100%; box-sizing: border-box; }
     
-    .banner-card { background-color: #fcfcfc; border-left: 5px solid #FF7A1A; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0px 2px 4px rgba(0,0,0,0.05); }
-    .banner-card-pink { border-left-color: #F5088B; }
-    .banner-card h4 { color: #282C3F !important; margin-top: 0; margin-bottom: 10px; }
+    .banner-card { background-color: #ffffff; border: 1px solid #E5E7EB; border-left: 4px solid #F13AB1; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .banner-card-pink { border-left-color: #E72744; }
+    .banner-card h4 { color: #29303E !important; margin-top: 0; margin-bottom: 10px; }
     .banner-card p { margin-bottom: 0; }
     
-    section[data-testid="stSidebar"] button { height: 50px; border-radius: 10px; border: none !important; border-left: 4px solid transparent !important; background-color: transparent !important; color: #282C3F !important; font-weight: 600; justify-content: flex-start; padding-left: 16px; transition: all 0.2s ease; margin-bottom: 2px;}
+    section[data-testid="stSidebar"] { background: #29303E !important; }
+    section[data-testid="stSidebar"] button { height: 50px; border-radius: 12px; border: none !important; border-left: 2px solid transparent !important; background-color: transparent !important; color: #E8E9ED !important; font-weight: 600; justify-content: flex-start; padding-left: 16px; transition: all 0.2s ease; margin-bottom: 2px;}
     section[data-testid="stSidebar"] button p, section[data-testid="stSidebar"] button span, section[data-testid="stSidebar"] button div { color: inherit !important; transition: all 0.2s ease; }
-    section[data-testid="stSidebar"] button:hover { background-color: rgba(0,0,0,0.02) !important; color: #282C3F !important; border-left-color: #F5088B !important; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    section[data-testid="stSidebar"] button:hover { background-color: #333B4C !important; color: #E8E9ED !important; border-left-color: #F05524 !important; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
     
-    div.stButton > button { transition: all 0.2s ease; }
-    div.stButton > button:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #F5088B; color: #F5088B; }
+    div.stButton > button { transition: all 0.2s ease; border-radius: 12px !important; }
+    div.stButton > button:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-color: #F13AB1; color: #F13AB1; }
     
     /* Outlined secondary buttons */
-    .stButton.quick-prompt > button { border: 1px solid #d1d5db !important; background-color: white !important; color: #282C3F !important; }
+    .stButton.quick-prompt > button { border: 1px solid #d1d5db !important; background-color: white !important; color: #29303E !important; }
     
-    /* Primary Action button forcefully applied */
-    button[kind="primary"] { background-color: #282C3F !important; color: #FFFFFF !important; border: none !important; border-radius: 999px !important; }
-    button[kind="primary"]:hover { background-color: #3D4159 !important; color: #FFFFFF !important; border: none !important; }
-    div[data-testid="stButton"] > button[kind="primary"] { background-color: #282C3F !important; color: #FFFFFF !important; border: none !important; border-radius: 999px !important; }
-    div[data-testid="stButton"] > button[kind="primary"]:hover { background-color: #3D4159 !important; color: #FFFFFF !important; border: none !important; }
-    button[kind="primary"] p, button[kind="primary"] div, button[kind="primary"] span { color: #FFFFFF !important; }
-    div[data-testid="stButton"] > button[kind="primary"] p, div[data-testid="stButton"] > button[kind="primary"] div, div[data-testid="stButton"] > button[kind="primary"] span { color: #FFFFFF !important; }
+    .opp-card { background-color: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #E5E7EB; border-left: 4px solid #F13AB1; box-shadow: 0 1px 3px rgba(0,0,0,0.06); height: 100%; display: flex; flex-direction: column; justify-content: center; }
+    .opp-card .opp-title { font-size: 13px; color: #5A6172; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+    .opp-card .opp-value { font-size: 18px; color: #E72744; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
+    .opp-card .opp-sub { font-size: 13px; color: #5A6172; }
     
-    .opp-card { background-color: #f9f9f9; padding: 15px; border-radius: 10px; border-left: 4px solid #F5088B; box-shadow: 0px 2px 4px rgba(0,0,0,0.05); height: 100%; display: flex; flex-direction: column; justify-content: center; }
-    .opp-card .opp-title { font-size: 13px; color: #6B7280; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
-    .opp-card .opp-value { font-size: 18px; color: #F5088B; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
-    .opp-card .opp-sub { font-size: 13px; color: #282C3F; }
-    
-    div[data-testid="stMetric"] { background-color: #f9f9f9; padding: 15px; border-radius: 10px; border-left: 4px solid #F5088B; box-shadow: 0px 2px 4px rgba(0,0,0,0.05); transition: all 0.2s ease; }
-    div[data-testid="stMetric"]:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-left-color: #FF7A1A; }
-    div[data-testid="stMetricValue"] > div { color: #F5088B !important; }
+    div[data-testid="stMetric"] { background-color: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #E5E7EB; border-left: 4px solid #F13AB1; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.2s ease; }
+    div[data-testid="stMetric"]:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-left-color: #FD913C; }
+    div[data-testid="stMetricValue"] > div { color: #E72744 !important; }
     div[data-testid="stMetricLabel"] p { color: #6B7280 !important; font-size: 14px !important; font-weight: 600; }
     
     /* Hide anchor link icons globally */
@@ -94,8 +92,32 @@ LIGHT_CSS = """
         background: transparent !important; border: none !important; box-shadow: none !important;
     }
     section[data-testid="stSidebar"] div.element-container:nth-of-type(1) button p, section[data-testid="stSidebar"] div.element-container:nth-of-type(1) button div {
-        font-size: 28px !important; font-weight: 700 !important; color: #282C3F !important; text-align: left !important; margin-left: 0 !important;
+        font-size: 24px !important; font-weight: 700 !important; color: #E8E9ED !important; text-align: left !important; margin-left: 0 !important;
     }
+    
+    /* Page background */
+    .stApp { background-color: #f3f4f6 !important; }
+
+
+    
+    /* Chat bubbles */
+    .chat-bubble-user { background-color: #29303E; color: #FFFFFF; padding: 12px 18px; border-radius: 12px; border-bottom-right-radius: 4px; display: inline-block; max-width: 80%; float: right; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); clear: both; }
+    .chat-bubble-user p { color: #FFFFFF !important; margin: 0; }
+    .chat-bubble-ai { background-color: #ffffff; border: 1px solid #E5E7EB; border-left: 4px solid #F13AB1; color: #5A6172; padding: 16px; border-radius: 12px; max-width: 90%; float: left; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); clear: both; }
+    .chat-bubble-ai p { color: #5A6172 !important; margin-top: 0; }
+    .chat-ai-label { font-size: 12px; color: #F13AB1; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    a.clear-chat-link:hover { color: #E72744 !important; }
+    
+    /* Hide markers completely from layout */
+    div.element-container:has(> div > div > div[id$="-marker"]) {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        min-height: 0 !important;
+    }
+    
+    .chat-container { display: flex; flex-direction: column; width: 100%; margin-bottom: 20px; }
 </style>
 """
 
@@ -114,32 +136,37 @@ try:
     tagged, clustered, ranking = load_data()
     try:
         import json
-        with open("data/precomputed_answers.json", "r", encoding="utf-8") as f:
+        with open("streamlit_app/data/precomputed_answers.json", "r", encoding="utf-8") as f:
             precomputed_answers = json.load(f)
     except Exception:
         precomputed_answers = {}
     
     if 'active_page' not in st.session_state:
         st.session_state['active_page'] = "Ask the Engine"
+    
+    if 'chat_history' not in st.session_state:
+        st.session_state['chat_history'] = []
 
     st.markdown(LIGHT_CSS, unsafe_allow_html=True)
 
     with st.sidebar:
-        if st.button("MyntraLens"):
+        if st.button("About"):
             st.session_state['active_page'] = "Ask the Engine"
             st.rerun()
-        st.markdown("<p class='sub-label' style='font-size: 14px;'>This intelligence engine parses unstructured social media and app store feedback to expose the hidden friction points causing wishlist abandonment.</p>", unsafe_allow_html=True)
+        st.markdown("<p class='sub-label' style='font-size: 13px; margin-top: -10px;'>This intelligence engine parses unstructured social media and app store feedback to expose the hidden friction points causing wishlist abandonment.</p>", unsafe_allow_html=True)
         st.divider()
         
         st.markdown("### Navigation")
         
-        pages = ["Ask the Engine", "Deep Analytics", "How It Works"]
+        pages = ["Ask the Engine", "Deep Analytics", "Methodology"]
         
         for i, page in enumerate(pages):
             if st.button(f"{page}", key=f"nav_{page}", use_container_width=True):
                 st.session_state['active_page'] = page
                 st.rerun()
                 
+
+
         # Push Sync Data to the bottom of the sidebar visually
         st.markdown("<br><br><br><br><br>", unsafe_allow_html=True)
         st.divider()
@@ -165,65 +192,38 @@ try:
     </style>
     """, unsafe_allow_html=True)
 
+    import streamlit.components.v1 as components
     selection = st.session_state['active_page']
+    
+    st.markdown("""
+    <div class="top-banner">
+        <h1 style="margin-top: 0; margin-bottom: 12px; color: #29303E !important; font-weight: 800; font-size: 32px !important;">
+            MyntraLens
+        </h1>
+        <p style="margin-top: 0; font-size: 16px !important; font-weight: 400; line-height: 1.6; color: #5A6172; margin-bottom: 0;">
+            MyntraLens analyzes <b style="color: #29303E;">6,181 real reviews and posts</b> (5,014 Play Store · 702 App Store · 465 Reddit) to uncover why Myntra users don't convert wishlisted items into purchases.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
     if selection == "Ask the Engine":
-        st.markdown("""
-        <div class="top-banner">
-            <h4>Why do Myntra users build massive wishlists but hesitate at checkout?<br>Decoding 6,181 genuine reviews maps the entire customer journey, surfacing the real reasons behind cart abandonment and lost conversions.</h4>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        col_header, _ = st.columns([4, 1])
-        with col_header:
-            st.header("Ask the Engine")
-            st.markdown("<p class='sub-label'>Use our RAG-powered engine to search the raw review dataset and generate synthesized answers based on actual customer complaints.</p>", unsafe_allow_html=True)
-                
-        # Reviews by Platform stat block
-        play_count = len(tagged[tagged['source'] == 'play_store'])
-        app_count = len(tagged[tagged['source'] == 'app_store'])
-        reddit_count = len(tagged[tagged['source'] == 'reddit'])
-        
-        r1, r2, r3, r4 = st.columns(4)
-        with r1:
-            st.markdown(f"""
-            <div class="banner-card" style="padding: 15px; border-left-color: #F5088B; border-top: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; height: 100%;">
-                <div style="flex-grow: 1;">
-                    <p style="margin: 0; color: #6B7280; font-size: 12px; font-weight: 600; text-transform: uppercase; line-height: 1.2; margin-bottom: 4px;">Cleaned Reviews</p>
-                    <h3 style="margin: 0; color: #282C3F; font-size: 24px;">{len(tagged):,}</h3>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        with r2:
-            st.markdown(f"""
-            <div class="banner-card" style="padding: 15px; border-left-color: #10B981; border-top: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; height: 100%;">
-                <div style="flex-grow: 1;">
-                    <p style="margin: 0; color: #6B7280; font-size: 12px; font-weight: 600; text-transform: uppercase; line-height: 1.2; margin-bottom: 4px;">Play Store</p>
-                    <h3 style="margin: 0; color: #282C3F; font-size: 24px;">{play_count:,}</h3>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        with r3:
-            st.markdown(f"""
-            <div class="banner-card" style="padding: 15px; border-left-color: #3B82F6; border-top: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; height: 100%;">
-                <div style="flex-grow: 1;">
-                    <p style="margin: 0; color: #6B7280; font-size: 12px; font-weight: 600; text-transform: uppercase; line-height: 1.2; margin-bottom: 4px;">App Store</p>
-                    <h3 style="margin: 0; color: #282C3F; font-size: 24px;">{app_count:,}</h3>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        with r4:
-            st.markdown(f"""
-            <div class="banner-card" style="padding: 15px; border-left-color: #FF7A1A; border-top: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; height: 100%;">
-                <div style="flex-grow: 1;">
-                    <p style="margin: 0; color: #6B7280; font-size: 12px; font-weight: 600; text-transform: uppercase; line-height: 1.2; margin-bottom: 4px;">Reddit</p>
-                    <h3 style="margin: 0; color: #282C3F; font-size: 24px;">{reddit_count:,}</h3>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+        if "clear" in st.query_params:
+            st.session_state['chat_history'] = []
+            st.query_params.clear()
+            st.rerun()
+            
+        st.header("Ask the Engine")
+        st.markdown("<p class='sub-label'>Use our RAG-powered engine to search the raw review dataset and generate synthesized answers based on actual customer complaints.</p>", unsafe_allow_html=True)
 
-        st.write("")
-        st.write("**Quick Prompts:**")
+        
+        # New styling explicitly scoped to Generate Insight button
+        st.markdown("""
+        <style>
+            div[data-testid="stFormSubmitButton"] > button { background-color: #29303E !important; color: #FFFFFF !important; font-weight: bold !important; border: none !important; border-radius: 12px !important; }
+            div[data-testid="stFormSubmitButton"] > button:hover { background-color: #333B4C !important; color: #FFFFFF !important; border: none !important; }
+            div[data-testid="stFormSubmitButton"] > button p, div[data-testid="stFormSubmitButton"] > button div, div[data-testid="stFormSubmitButton"] > button span { color: #FFFFFF !important; font-weight: bold !important; }
+        </style>
+        """, unsafe_allow_html=True)
         
         q1 = "Why do users hesitate before buying wishlisted items?"
         q2 = "What causes the most return and refund complaints?"
@@ -232,39 +232,218 @@ try:
         q5 = "What UX problems affect the wishlist feature?"
         
         active_query = None
-        
-        st.markdown('<div class="quick-prompts-container">', unsafe_allow_html=True)
-        qc1, qc2 = st.columns(2)
-        with qc1:
-            if st.button(q1, use_container_width=True): active_query = q1
-            if st.button(q2, use_container_width=True): active_query = q2
-            if st.button(q3, use_container_width=True): active_query = q3
-        with qc2:
-            if st.button(q4, use_container_width=True): active_query = q4
-            if st.button(q5, use_container_width=True): active_query = q5
-        st.markdown('</div>', unsafe_allow_html=True)
+        if 'submit_query' in st.session_state and st.session_state['submit_query']:
+            active_query = st.session_state['submit_query']
+            st.session_state['submit_query'] = None
             
-        custom_query = st.text_input("Or enter a custom query:")
-        st.markdown("<p style='font-size: 12px; color: #9CA3AF; font-style: italic; margin-top: -10px; margin-bottom: 20px;'>AI-generated responses may contain inaccuracies.</p>", unsafe_allow_html=True)
-        
-        if st.button("Generate Insight", type="primary", use_container_width=True):
-            active_query = custom_query
+        def render_input_row():
+            with st.form("chat_form", clear_on_submit=True):
+                fc1, fc2 = st.columns([4, 1])
+                with fc1:
+                    custom_query = st.text_input("Query", label_visibility="collapsed", placeholder="Ask about wishlist behavior, returns, sizing...")
+                with fc2:
+                    submitted = st.form_submit_button("Generate Insight", type="primary", use_container_width=True)
+            st.markdown("<p style='font-size: 12px; color: #9CA3AF; font-style: italic; margin-top: -10px; margin-bottom: 5px;'>AI-generated responses may contain inaccuracies.</p>", unsafe_allow_html=True)
+            return submitted, custom_query
+
+        if len(st.session_state['chat_history']) == 0:
+            # STATE 1: Empty History
+            st.markdown("<h3 style='text-align: center; margin-top: 40px;'>Suggested Questions</h3>", unsafe_allow_html=True)
             
+            main_suggestions_card = st.container()
+            with main_suggestions_card:
+                st.markdown("<div id='main-suggestions-marker'></div>", unsafe_allow_html=True)
+                st.markdown("""
+                <style>
+                    div[data-testid="stVerticalBlock"]:has(> div.element-container #main-suggestions-marker) {
+                        flex-direction: row !important;
+                        flex-wrap: wrap !important;
+                        justify-content: center !important;
+                        gap: 12px !important;
+                    }
+                    div[data-testid="stVerticalBlock"]:has(> div.element-container #main-suggestions-marker) div.element-container,
+                    div[data-testid="stVerticalBlock"]:has(> div.element-container #main-suggestions-marker) div[data-testid="stButton"] {
+                        width: auto !important;
+                        flex: 0 0 auto !important;
+                    }
+                    div[data-testid="stVerticalBlock"]:has(> div.element-container #main-suggestions-marker) div[data-testid="stButton"] button {
+                        font-size: 13.5px !important; 
+                        margin-bottom: 0px !important; 
+                        white-space: nowrap !important; 
+                        height: auto !important; 
+                        padding: 10px 16px !important; 
+                        border-radius: 50px !important; 
+                        background-color: #ffffff !important; 
+                        border: 1px solid #e5e7eb !important; 
+                        color: #5A6172 !important; 
+                        box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
+                        width: auto !important;
+                        display: inline-flex !important;
+                        align-items: center !important;
+                    }
+                    div[data-testid="stVerticalBlock"]:has(> div.element-container #main-suggestions-marker) div[data-testid="stButton"] button * {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        width: auto !important;
+                    }
+
+                    div[data-testid="stVerticalBlock"]:has(> div.element-container #main-suggestions-marker) div[data-testid="stButton"] button:hover { 
+                        border-color: #F13AB1 !important; 
+                        color: #F13AB1 !important; 
+                    }
+                </style>
+                """, unsafe_allow_html=True)
+                if st.button(q1, key="q1_main"): active_query = q1
+                if st.button(q2, key="q2_main"): active_query = q2
+                if st.button(q3, key="q3_main"): active_query = q3
+                if st.button(q4, key="q4_main"): active_query = q4
+                if st.button(q5, key="q5_main"): active_query = q5
+                
+            st.write("")
+            st.write("")
+            submitted, custom_query = render_input_row()
+            if submitted and custom_query:
+                active_query = custom_query
+        else:
+            # STATE 2: Active Chat Log
+            col_main, col_suggestions = st.columns([3, 1])
+            
+            with col_main:
+                main_chat_card = st.container(border=True)
+                with main_chat_card:
+                    st.markdown("""
+                    <div id='main-chat-card-marker'></div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-bottom: 12px;">
+                        <h5 class='chat-log-title' style='margin: 0; padding: 0; line-height: 1.5; color: #29303E; font-weight: 600;'>CHAT LOG</h5>
+                        <a href="?clear=true" target="_self" class="clear-chat-link" style="color: #5A6172; font-size: 14px; font-weight: 600; text-decoration: underline; margin: 0; line-height: 1.5;">Clear Chat</a>
+                    </div>
+                    <hr style='margin: 0 0 10px 0; border: none; border-top: 1px solid #e5e7eb;'/>
+                    """, unsafe_allow_html=True)
+                    
+                    chat_container = st.container(height=550, border=False)
+                    with chat_container:
+                        for msg in st.session_state['chat_history']:
+                            if msg['role'] == 'user':
+                                st.markdown(f"""
+                                <div class="chat-container">
+                                    <div class="chat-bubble-user">
+                                        <p>{msg['content']}</p>
+                                    </div>
+                                </div>
+                                """, unsafe_allow_html=True)
+                            else:
+                                st.markdown(f"""
+                                <div class="chat-container">
+                                    <div class="chat-bubble-ai">
+                                        <div class="chat-ai-label">🤖 AI ASSISTANT RESPONSE</div>
+                                        <p>{msg['content']}</p>
+                                    </div>
+                                </div>
+                                """, unsafe_allow_html=True)
+                                if 'sources' in msg and msg['sources']:
+                                    with st.expander("View supporting reviews"):
+                                        for src in msg['sources']:
+                                            st.markdown(f"- {src}")
+                        
+                        wait_placeholder = st.empty()
+                        
+                        st.markdown("<div id='chat-end-marker'></div>", unsafe_allow_html=True)
+                        
+                        if 'last_chat_len' not in st.session_state or st.session_state['last_chat_len'] != len(st.session_state['chat_history']):
+                            st.session_state['last_chat_len'] = len(st.session_state['chat_history'])
+                            components.html("""
+                                <script>
+                                    const marker = window.parent.document.getElementById('chat-end-marker');
+                                    if (marker) {
+                                        marker.scrollIntoView({behavior: 'smooth', block: 'end'});
+                                    }
+                                </script>
+                            """, height=0)
+                
+                input_card = st.container()
+                with input_card:
+                    st.markdown("<div id='input-card-marker'></div>", unsafe_allow_html=True)
+                    submitted, custom_query = render_input_row()
+                    if submitted and custom_query:
+                        active_query = custom_query
+                        
+            with col_suggestions:
+                sidebar_card = st.container()
+                with sidebar_card:
+                    st.markdown("""
+                    <div id='sidebar-card-marker'></div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-bottom: 12px;">
+                        <h5 style='margin: 0; padding: 0; line-height: 1.5; color: #29303E !important; font-weight: 700; text-transform: uppercase;'>SUGGESTED QUESTIONS</h5>
+                    </div>
+                    <hr style='margin: 0 0 10px 0; border: none; border-top: 1px solid #e5e7eb;'/>
+                    """, unsafe_allow_html=True)
+                    st.markdown("""
+                    <style>
+                        div[data-testid="stVerticalBlock"]:has(> div.element-container #sidebar-card-marker) {
+                            background-color: #FFFFFF !important;
+                            border-radius: 12px !important;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+                            border: 1px solid #e5e7eb !important;
+                            padding: 24px !important;
+                        }
+                        div[data-testid="stVerticalBlock"]:has(#sidebar-card-marker) div[data-testid="stButton"] button {
+                            text-align: left !important; 
+                            justify-content: flex-start !important; 
+                            font-size: 13px !important; 
+                            margin-bottom: 8px !important; 
+                            white-space: normal !important; 
+                            height: auto !important; 
+                            padding: 12px 16px !important; 
+                            line-height: 1.4 !important; 
+                            border-radius: 12px !important; 
+                            background-color: #ffffff !important; 
+                            border: 1px solid #e5e7eb !important; 
+                            color: #5A6172 !important; 
+                            box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
+                            width: 100% !important;
+                            display: flex !important;
+                        }
+                        div[data-testid="stVerticalBlock"]:has(#sidebar-card-marker) div[data-testid="stButton"] button * {
+                            text-align: left !important;
+                            justify-content: flex-start !important;
+                            width: 100% !important;
+                            margin: 0 !important;
+                        }
+
+                        div[data-testid="stVerticalBlock"]:has(#sidebar-card-marker) div[data-testid="stButton"] button:hover { 
+                            border-color: #F13AB1 !important; 
+                            color: #F13AB1 !important; 
+                        }
+                    </style>
+                    """, unsafe_allow_html=True)
+                    
+                    if st.button(q1, use_container_width=True, key="q1_side"): active_query = q1
+                    if st.button(q2, use_container_width=True, key="q2_side"): active_query = q2
+                    if st.button(q3, use_container_width=True, key="q3_side"): active_query = q3
+                    if st.button(q4, use_container_width=True, key="q4_side"): active_query = q4
+                    if st.button(q5, use_container_width=True, key="q5_side"): active_query = q5
+                
+        # Handle Query Processing
         if active_query:
             if not active_query.strip():
                 st.warning("Please type a valid question.")
             else:
-                st.info(f"**Investigating:** {active_query}")
-                try:
-                    if active_query in precomputed_answers:
-                        ans_data = precomputed_answers[active_query]
-                        st.success(f"Analysis Complete (Powered by `{ans_data['model']}`)")
-                        st.markdown(ans_data['answer'])
-                        with st.expander("Examine Retrieved Feedback Records"):
-                            for text in ans_data['sources']:
-                                st.markdown(f"- {text}")
-                    else:
-                        with st.spinner("Retrieving relevant reviews and generating an answer..."):
+                st.session_state['chat_history'].append({"role": "user", "content": active_query})
+                
+                # Check for cached/precomputed answers first to speed up known questions
+                if active_query in precomputed_answers:
+                    ans_data = precomputed_answers[active_query]
+                    st.session_state['chat_history'].append({
+                        "role": "assistant",
+                        "content": ans_data['answer'],
+                        "sources": ans_data['sources'],
+                        "is_new": True
+                    })
+                    st.rerun()
+                else:
+                    # Not in precomputed, do full RAG
+                    with st.spinner("Generating insight..."):
+                        try:
                             embedder = load_embedder()
                             texts = clustered['text'].astype(str).tolist()
                             corpus_embeddings = get_corpus_embeddings(embedder, texts)
@@ -272,278 +451,205 @@ try:
                             query_embedding = embedder.encode(active_query, convert_to_tensor=True)
                             hits = util.semantic_search(query_embedding, corpus_embeddings, top_k=8)[0]
                             
-                            if not hits or hits[0]['score'] < 0.3:
-                                st.warning("This question doesn't appear to relate to the Myntra wishlist/purchase dataset. Try asking about fit, sizing, returns, delivery, trust, pricing, or the wishlist feature.")
+                            if not hits or hits[0]['score'] < 0.4:
+                                st.session_state['chat_history'].append({
+                                    "role": "assistant",
+                                    "content": "No relevant insights found for that question. Try asking about fit, sizing, returns, delivery, trust, pricing, or the wishlist feature.",
+                                    "sources": [],
+                                    "is_new": True
+                                })
+                                st.rerun()
                             else:
                                 context_texts = []
                                 for i, hit in enumerate(hits):
                                     idx = hit['corpus_id']
                                     row = clustered.iloc[idx]
-                                    context_texts.append(f"Source {i+1} ({row.get('source', 'N/A')}): {row.get('text', 'N/A')}")
+                                    context_texts.append(f"({row.get('source', 'N/A')}): {row.get('text', 'N/A')}")
                                     
                                 context_str = "\\n\\n".join(context_texts)
                                 
                                 try:
-                                    text_out, model_used = generate_rag_insight(active_query, context_str)
+                                    text_out, _ = generate_rag_insight(active_query, context_str)
                                     
                                     if text_out == "QUOTA_ERROR":
-                                        st.error("This question requires a live AI query and we've hit today's free quota. Try one of the other suggested questions above, which are pre-loaded and always available.")
+                                        st.session_state['chat_history'].append({
+                                            "role": "assistant",
+                                            "content": "⚠️ **API Quota Exceeded**: The Gemini API rate limit (per-minute or daily) has been reached. Please wait a moment and try again, or use one of the precomputed suggested questions.",
+                                            "sources": [],
+                                            "is_new": True
+                                        })
                                     else:
-                                        st.success(f"Analysis Complete (Powered by `{model_used}`)")
-                                        st.markdown(text_out)
-                                        
-                                        with st.expander("Examine Retrieved Feedback Records"):
-                                            for text in context_texts:
-                                                st.markdown(f"- {text}")
-                                except KeyError:
-                                    st.error("Configuration Error: GEMINI_API_KEY is missing from Streamlit secrets.")
+                                        st.session_state['chat_history'].append({
+                                            "role": "assistant",
+                                            "content": text_out,
+                                            "sources": context_texts,
+                                            "is_new": True
+                                        })
+                                    st.rerun()
                                 except Exception as e:
-                                    st.error(f"Inference Engine Error: {e}")
-                except Exception as e:
-                    st.error(f"RAG Error: {e}")
+                                    st.session_state['chat_history'].append({
+                                        "role": "assistant",
+                                        "content": f"⚠️ **An error occurred during retrieval**: {str(e)}",
+                                        "sources": [],
+                                        "is_new": True
+                                    })
+                                    st.rerun()
+                        except Exception:
+                            st.session_state['chat_history'].append({
+                                "role": "assistant",
+                                "content": "No relevant insights found for that question. Try asking about fit, sizing, returns, delivery, trust, pricing, or the wishlist feature.",
+                                "sources": [],
+                                "is_new": True
+                            })
+                            st.rerun()
+                            
+        # 15s delay logic has been entirely removed
 
     elif selection == "Deep Analytics":
         st.header("Deep Analytics")
         st.markdown("<p class='sub-label'>A breakdown of the primary reasons users hesitate and abandon their wishlists.</p>", unsafe_allow_html=True)
         
-        st.markdown("""
-        <div class="banner-card banner-card-pink">
-            <h4>Dominant Friction Pattern</h4>
-            <p>Across the dataset, users are fundamentally struggling with post-purchase anxiety that bleeds into their pre-purchase wishlist behavior. The highest volume of friction stems directly from complicated return processes, delayed refunds, and lingering doubts regarding product authenticity. When users don't trust the fulfillment or return pipeline, they use the wishlist as a holding area rather than converting to a cart.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        tab_themes, tab_insights = st.tabs(["Themes", "Validated Insights"])
         
-        st.subheader("Platform Frustration Index")
-        df_merged = pd.merge(tagged, ranking[['hypothesis_tag', 'avg_negativity_intensity']], on='hypothesis_tag', how='left')
-        df_merged['frustration_score'] = df_merged['hypothesis_confidence'] * df_merged['avg_negativity_intensity'] * 100
-        platform_scores = df_merged.groupby('source')['frustration_score'].mean().fillna(0).to_dict()
-        
-        p1, p2, p3 = st.columns(3)
-        with p1:
-            st.metric("Play Store Frustration", f"{platform_scores.get('play_store', 0):.1f}/100")
-            st.markdown("<small class='sub-label'>Driven by bugs and high-volume return complaints.</small>", unsafe_allow_html=True)
-        with p2:
-            st.metric("App Store Frustration", f"{platform_scores.get('app_store', 0):.1f}/100")
-            st.markdown("<small class='sub-label'>Driven by premium UX expectations and authenticity concerns.</small>", unsafe_allow_html=True)
-        with p3:
-            st.metric("Reddit Frustration", f"{platform_scores.get('reddit', 0):.1f}/100")
-            st.markdown("<small class='sub-label'>Driven by deep, structural catalog and policy discussions.</small>", unsafe_allow_html=True)
-            
-        st.write("")
-        st.subheader("Key Insights")
-        st.markdown("""
-        <div class="banner-card">
-            <h4>1. Returns & Refunds Dominate Hesitation</h4>
-            <p>The vast majority of identifiable friction points relate to users fearing they won't be able to return items easily, causing them to pause on high-value wishlist items.</p>
-        </div>
-        <div class="banner-card">
-            <h4>2. The "Silent" Wishlist Behavior</h4>
-            <p>Users rarely state <em>why</em> they abandoned a wishlist item in a review. Instead, they complain about a bad experience (like a fake product), which we infer is the root cause for their hesitation on future purchases.</p>
-        </div>
-        <div class="banner-card">
-            <h4>3. Cross-Source Agreement</h4>
-            <p>Whether on Reddit, the App Store, or Play Store, the core complaints remain remarkably consistent—indicating these are structural platform issues, not localized bugs.</p>
-        </div>
-        <div class="banner-card banner-card-pink">
-            <h4>4. Structural Constraints Impede Curation</h4>
-            <p>Users actively bump into a hard limit on the number of items they can wishlist, forcing them to treat the feature as a strict curation tool rather than a casual saved-for-later bin.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.write("")
-        st.subheader("Discovery Themes")
-        
-        if not ranking.empty:
-            valid_ranking = ranking[ranking['hypothesis_tag'] != "general positive satisfaction with no specific complaint"].copy()
-            if not valid_ranking.empty:
-                valid_ranking['display_name'] = valid_ranking['hypothesis_tag'].map(TAG_MAP).fillna(valid_ranking['hypothesis_tag'].astype(str))
-                
-                most_mentioned = valid_ranking.loc[valid_ranking['count'].idxmax()]
-                most_negative = valid_ranking.loc[valid_ranking['avg_negativity_intensity'].idxmax()]
-                most_positive = valid_ranking.loc[valid_ranking['avg_negativity_intensity'].idxmin()]
-                
-                tr1, tr2, tr3 = st.columns(3)
-                with tr1:
-                    d_name_1 = most_mentioned.get('display_name', 'N/A')
-                    st.markdown(f"""<div class="opp-card" style="border-left: 4px solid #F5088B;"><div class="opp-title">MOST MENTIONED</div><div class="opp-value" style="color: #282C3F;">{d_name_1}</div><div class="opp-sub">{most_mentioned.get('count', 0)} reviews ({most_mentioned.get('percentage_of_total', 0):.1f}%)</div></div>""", unsafe_allow_html=True)
-                with tr2:
-                    d_name_2 = most_negative.get('display_name', 'N/A')
-                    neg_val = most_negative.get('avg_negativity_intensity', 0)*100
-                    st.markdown(f"""<div class="opp-card" style="border-left: 4px solid #EF4444;"><div class="opp-title">MOST NEGATIVE</div><div class="opp-value" style="color: #282C3F;">{d_name_2}</div><div class="opp-sub" style="color: #EF4444; font-weight: 600;">The most painful theme ({neg_val:.0f}% negative)</div></div>""", unsafe_allow_html=True)
-                with tr3:
-                    d_name_3 = most_positive.get('display_name', 'N/A')
-                    st.markdown(f"""<div class="opp-card" style="border-left: 4px solid #10B981;"><div class="opp-title">MOST POSITIVE</div><div class="opp-value" style="color: #282C3F;">{d_name_3}</div><div class="opp-sub" style="color: #10B981; font-weight: 600;">What users are least concerned about</div></div>""", unsafe_allow_html=True)
-
-        st.write("")
-        valid_ranking_tags = ranking[ranking['hypothesis_tag'] != "general positive satisfaction with no specific complaint"]
-        for _, row in valid_ranking_tags.iterrows():
-            raw_tag = row['hypothesis_tag']
-            d_name = TAG_MAP.get(raw_tag, str(raw_tag))
-            count = row.get('count', 0)
-            neg = row.get('avg_negativity_intensity', 0)
-            
-            if neg > 0.6:
-                sentiment_label = "Negative"
-                color = "#EF4444"
-            elif neg < 0.35:
-                sentiment_label = "Positive"
-                color = "#10B981"
-            else:
-                sentiment_label = "Mixed"
-                color = "#F59E0B"
-                
-            cdata = tagged[tagged['hypothesis_tag'] == raw_tag]
-            
-            with st.expander(f"{d_name} ({count} reviews) — {sentiment_label}"):
-                st.markdown(f"**Sentiment Profile:** <span style='color:{color}; font-weight:bold;'>{sentiment_label}</span> (Negativity Intensity: {neg:.2f})", unsafe_allow_html=True)
-                st.markdown("*" + "What users are saying:" + "*")
-                
-                # Show 3-4 illustrative quotes
-                sample_reviews = cdata['text'].dropna().sample(min(4, len(cdata)), random_state=42).tolist()
-                for txt in sample_reviews:
-                    st.markdown(f"> \"{txt}\"")
-                    
-        st.write("")
-        st.subheader("Top Opportunity Areas")
-        if not ranking.empty:
-            o1, o2, o3 = st.columns(3)
-            with o1:
-                t1 = TAG_MAP.get(ranking.iloc[0]['hypothesis_tag'], str(ranking.iloc[0]['hypothesis_tag'])) if pd.notna(ranking.iloc[0]['hypothesis_tag']) else "N/A"
-                p1 = ranking.iloc[0]['percentage_of_total'] if pd.notna(ranking.iloc[0]['percentage_of_total']) else 0
-                st.markdown(f"""<div class="opp-card"><div class="opp-title">Primary Opportunity</div><div class="opp-value">{t1}</div><div class="opp-sub">{p1:.1f}% of signals</div></div>""", unsafe_allow_html=True)
-            if len(ranking) > 1:
-                with o2:
-                    t2 = TAG_MAP.get(ranking.iloc[1]['hypothesis_tag'], str(ranking.iloc[1]['hypothesis_tag'])) if pd.notna(ranking.iloc[1]['hypothesis_tag']) else "N/A"
-                    p2 = ranking.iloc[1]['percentage_of_total'] if pd.notna(ranking.iloc[1]['percentage_of_total']) else 0
-                    st.markdown(f"""<div class="opp-card"><div class="opp-title">Secondary Opportunity</div><div class="opp-value">{t2}</div><div class="opp-sub">{p2:.1f}% of signals</div></div>""", unsafe_allow_html=True)
-            if len(ranking) > 2:
-                with o3:
-                    t3 = TAG_MAP.get(ranking.iloc[2]['hypothesis_tag'], str(ranking.iloc[2]['hypothesis_tag'])) if pd.notna(ranking.iloc[2]['hypothesis_tag']) else "N/A"
-                    p3 = ranking.iloc[2]['percentage_of_total'] if pd.notna(ranking.iloc[2]['percentage_of_total']) else 0
-                    st.markdown(f"""<div class="opp-card"><div class="opp-title">Tertiary Opportunity</div><div class="opp-value">{t3}</div><div class="opp-sub">{p3:.1f}% of signals</div></div>""", unsafe_allow_html=True)
-            
-            st.write("")
-            display_ranking = ranking.copy()
-            display_ranking['display_name'] = display_ranking['hypothesis_tag'].map(TAG_MAP).fillna(display_ranking['hypothesis_tag']).fillna("N/A").astype(str)
-            fig_ranking = px.bar(display_ranking, x='count', y='display_name', orientation='h',
-                                 color='avg_negativity_intensity',
-                                 color_continuous_scale=["#FF7A1A", "#F5088B"],
-                                 text='percentage_of_total')
-            fig_ranking.update_layout(yaxis={'categoryorder':'total ascending'}, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', title="Opportunity Area Breakdown")
-            fig_ranking.update_traces(hovertemplate='<b>%{y}</b><br>Count: %{x}<br>Percentage: %{text}%', texttemplate='%{text}%', textposition='outside')
-            st.plotly_chart(fig_ranking, use_container_width=True)
-            
-        st.write("")
-        st.subheader("Top User Needs & Actionable Insights")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("""
-            <div class="banner-card">
-                <h4>Discovery & Convenience Opportunities</h4>
-                <p><strong>Expand Wishlist Limits:</strong> Increase the hard cap on wishlists to encourage casual saving rather than strict curation.<br><br>
-                <strong>Authenticity Badges:</strong> Display verified supplier badges explicitly on wishlisted items to counter trust-related hesitation.</p>
-            </div>
-            """, unsafe_allow_html=True)
-        with c2:
+        with tab_insights:
             st.markdown("""
             <div class="banner-card banner-card-pink">
-                <h4>UX & Control Enhancements</h4>
-                <p><strong>Transparent Return Policies:</strong> Highlight return windows and exact refund timelines directly inside the wishlist view.<br><br>
-                <strong>Sizing Intelligence:</strong> Introduce proactive size-fit predictors before the user moves the item to cart to reduce return anxiety.</p>
+                <h4 style="color: #F13AB1 !important;">The Validated Finding</h4>
+                <p style="font-size: 16px;"><strong>Users don't abandon wishlists because they lose interest—they abandon them because they lack trust in the post-purchase experience.</strong><br>Across the dataset, users are fundamentally struggling with post-purchase anxiety that bleeds into their pre-purchase wishlist behavior. The highest volume of friction stems directly from complicated return processes, delayed refunds, and lingering doubts regarding product authenticity. When users don't trust the fulfillment or return pipeline, they use the wishlist as a holding area rather than converting to a cart.</p>
             </div>
             """, unsafe_allow_html=True)
             
-        st.write("")
-        st.subheader("Recent Reviews Live Feed")
-        
-        if 'timestamp' in tagged.columns:
-            sorted_tagged = tagged.sort_values('timestamp', ascending=False)
-        else:
-            sorted_tagged = tagged.copy()
-            
-        play_rows = sorted_tagged[sorted_tagged['source'] == 'play_store'].head(4)
-        app_rows = sorted_tagged[sorted_tagged['source'] == 'app_store'].head(3)
-        reddit_rows = sorted_tagged[sorted_tagged['source'] == 'reddit'].head(3)
-        
-        combined_rows = pd.concat([play_rows, app_rows, reddit_rows])
-        if 'timestamp' in combined_rows.columns:
-            feed_rows = combined_rows.sort_values('timestamp', ascending=False)
-        else:
-            feed_rows = combined_rows.sample(frac=1, random_state=42)
-            
-        for _, row in feed_rows.iterrows():
-            src = row.get('source', 'Unknown')
-            if src == 'play_store':
-                color = "#10B981" 
-            elif src == 'app_store':
-                color = "#3B82F6" 
-            else:
-                color = "#FF7A1A" 
-                
-            d_tag = TAG_MAP.get(row.get('hypothesis_tag'), str(row.get('hypothesis_tag', 'N/A')))
-            st.markdown(f"""
-            <div style="background-color: #f9f9f9; border-left: 3px solid {color}; padding: 10px; border-radius: 4px; margin-bottom: 8px;">
-                <small style="color: #6B7280; font-weight: bold;">{str(src).upper()} • {row.get('timestamp', 'Recent')}</small>
-                <span style="background-color: {color}; color: white; padding: 2px 6px; border-radius: 12px; font-size: 10px; margin-left: 10px;">{d_tag}</span>
-                <p style="margin: 5px 0 0 0; font-size: 14px;">{str(row.get('text', 'N/A'))[:150]}...</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        st.write("")
-        st.subheader("Shopping Behaviour (Primary Research)")
-        if os.path.exists("data/survey_responses.csv"):
-            survey = pd.read_csv("data/survey_responses.csv")
-            n_respondents = len(survey)
-            
-            col4 = 'Have you ever NOT bought a wishlisted item specifically because you were unsure about the size/fit?'
-            never_pct = (survey[col4] == 'Never').mean() * 100 if col4 in survey.columns else 0
-            fit_skipped = 100 - never_pct
-            
-            col5 = 'Would knowing "based on your past orders, size M will likely fit you in this brand" make you more likely to buy from your wishlist?'
-            buy_more = survey[col5].str.contains('yes', case=False, na=False).mean() * 100 if col5 in survey.columns else 0
-            
-            col3 = 'When you wishlist something but don\'t buy it within 30 days, what\'s the MAIN reason?'
-            if col3 in survey.columns:
-                valid_reasons = survey[col3].dropna()
-                top_reason = valid_reasons.value_counts().index[0] if not valid_reasons.empty else "N/A"
-            else:
-                top_reason = "N/A"
-            
-            st.markdown("""
-            <style>
-            .survey-metric { background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-            .survey-metric .val { font-size: 24px; font-weight: bold; color: #F5088B; margin-bottom: 5px; }
-            .survey-metric .lbl { font-size: 13px; color: #6B7280; font-weight: 500; }
-            .survey-metric .text-val { font-size: 16px; font-weight: 600; color: #282C3F; margin-bottom: 5px; }
-            </style>
-            """, unsafe_allow_html=True)
-            
-            s1, s2, s3 = st.columns(3)
-            with s1:
-                st.markdown(f"""<div class="survey-metric"><div class="val">{n_respondents}</div><div class="lbl">Survey Respondents</div></div>""", unsafe_allow_html=True)
-            with s2:
-                st.markdown(f"""<div class="survey-metric"><div class="val">{fit_skipped:.1f}%</div><div class="lbl">Skipped due to fit uncertainty</div></div>""", unsafe_allow_html=True)
-            with s3:
-                st.markdown(f"""<div class="survey-metric"><div class="val">{buy_more:.1f}%</div><div class="lbl">Would buy more with fit-prediction</div></div>""", unsafe_allow_html=True)
-            
-            st.write("")
-            st.markdown(f"""
-            <div class="banner-card" style="width: 100%; border-left-color: #282C3F;">
-                <h4 style="color: #6B7280 !important; font-size: 14px; text-transform: uppercase;">Top reason unpurchased</h4>
-                <p style="font-size: 18px; font-weight: bold; color: #282C3F;">{top_reason}</p>
-            </div>
-            """, unsafe_allow_html=True)
-                
-        else:
-            st.markdown("""
-            <div class="banner-card">
-                <h4 style="color: #6B7280 !important;">Survey data pending</h4>
-                <p>This section will be integrated directly from primary qualitative research.</p>
-            </div>
-            """, unsafe_allow_html=True)
 
-    elif selection == "How It Works":
-        st.header("How It Works")
+            st.subheader("The gap, in users' words")
+            st.markdown("""
+            > *"I have 50 items in my wishlist but I'm scared to order because the last time I returned something it took a month to get my money back."*
+            
+            > *"Love the clothes but the sizes are so inconsistent. I just wishlist them and wait to see if I can find them in store instead of dealing with returns."*
+            
+            > *"Customer service is unresponsive when items arrive damaged. Keeping items in wishlist forever because I don't want to risk another bad experience."*
+            """)
+            
+
+            st.subheader("Cross-source triangulation")
+            if not ranking.empty and 'source' in tagged.columns:
+                source_dist = pd.crosstab(tagged['hypothesis_tag'], tagged['source'], normalize='index') * 100
+                source_dist = source_dist.round(1)
+                
+                display_dist = source_dist.copy()
+                display_dist.index = display_dist.index.map(lambda x: TAG_MAP.get(x, x))
+                
+                for col in display_dist.columns:
+                    display_dist[col] = display_dist[col].apply(lambda x: f"{x:.1f}%")
+                
+                st.dataframe(display_dist, use_container_width=True)
+            else:
+                st.info("Source distribution data not available.")
+                
+
+            st.subheader("Why this matters for the growth goal")
+            st.markdown("""
+            * **Returns & Refunds are the real conversion killer:** Fixing the cart experience won't help if users are deterred by return anxiety before they even add to cart.
+            * **Trust signals are missing:** Users need authenticity guarantees and transparent return policies visible *within* the wishlist itself.
+            * **Sizing uncertainty creates friction:** Predictive sizing would give users the confidence to move items from wishlist to cart.
+            * **This is a hypothesis to validate in interviews, not a conclusion — reviews can't observe wishlist abandonment directly.**
+            """)
+            
+
+            st.subheader("Shopping Behaviour (Primary Research)")
+            if os.path.exists("data/survey_responses.csv"):
+                survey = pd.read_csv("data/survey_responses.csv")
+                n_respondents = len(survey)
+                
+                col4 = 'Have you ever NOT bought a wishlisted item specifically because you were unsure about the size/fit?'
+                never_pct = (survey[col4] == 'Never').mean() * 100 if col4 in survey.columns else 0
+                fit_skipped = 100 - never_pct
+                
+                col5 = 'Would knowing "based on your past orders, size M will likely fit you in this brand" make you more likely to buy from your wishlist?'
+                buy_more = survey[col5].str.contains('yes', case=False, na=False).mean() * 100 if col5 in survey.columns else 0
+                
+                col3 = 'When you wishlist something but don\'t buy it within 30 days, what\'s the MAIN reason?'
+                if col3 in survey.columns:
+                    valid_reasons = survey[col3].dropna()
+                    top_reason = valid_reasons.value_counts().index[0] if not valid_reasons.empty else "N/A"
+                else:
+                    top_reason = "N/A"
+                
+                st.markdown("""
+                <style>
+                .survey-metric { background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+                .survey-metric .val { font-size: 24px; font-weight: bold; color: #F5088B; margin-bottom: 5px; }
+                .survey-metric .lbl { font-size: 13px; color: #6B7280; font-weight: 500; }
+                .survey-metric .text-val { font-size: 16px; font-weight: 600; color: #282C3F; margin-bottom: 5px; }
+                </style>
+                """, unsafe_allow_html=True)
+                
+                s1, s2, s3 = st.columns(3)
+                with s1:
+                    st.markdown(f"""<div class="survey-metric"><div class="val">{n_respondents}</div><div class="lbl">Survey Respondents</div></div>""", unsafe_allow_html=True)
+                with s2:
+                    st.markdown(f"""<div class="survey-metric"><div class="val">{fit_skipped:.1f}%</div><div class="lbl">Skipped due to fit uncertainty</div></div>""", unsafe_allow_html=True)
+                with s3:
+                    st.markdown(f"""<div class="survey-metric"><div class="val">{buy_more:.1f}%</div><div class="lbl">Would buy more with fit-prediction</div></div>""", unsafe_allow_html=True)
+                
+    
+                st.markdown(f"""
+                <div class="survey-metric" style="flex-direction: row; justify-content: space-between; align-items: center; text-align: left; margin-top: 15px; width: 100%;">
+                    <div>
+                        <div class="lbl" style="text-transform: uppercase; margin-bottom: 5px;">Top reason unpurchased</div>
+                        <div class="text-val" style="font-size: 20px; color: #282C3F; margin-bottom: 0;">{top_reason}</div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+                    
+            else:
+                st.markdown("""
+                <div class="banner-card">
+                    <h4 style="color: #6B7280 !important;">Survey data pending</h4>
+                    <p>This section will be integrated directly from primary qualitative research.</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+        with tab_themes:
+            if not ranking.empty:
+                valid_ranking = ranking[ranking['hypothesis_tag'] != "general positive satisfaction with no specific complaint"].copy()
+                valid_ranking['display_name'] = valid_ranking['hypothesis_tag'].map(TAG_MAP).fillna(valid_ranking['hypothesis_tag'].astype(str))
+                
+                fig_ranking = px.bar(valid_ranking, x='percentage_of_total', y='display_name', orientation='h',
+                                     color='avg_negativity_intensity', color_continuous_scale=[[0, "#FF7A1A"], [1, "#F5088B"]],
+                                     text='percentage_of_total', title="What users actually talk about")
+                fig_ranking.update_traces(hovertemplate='<b>%{y}</b><br>Percentage: %{x:.1f}%', texttemplate='%{text:.1f}%', textposition='outside')
+                fig_ranking.update_layout(yaxis={'categoryorder':'total ascending'}, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis_title="% of Reviews", yaxis_title="")
+                st.plotly_chart(fig_ranking, use_container_width=True)
+                
+                st.markdown("*Read this chart carefully. Returns and fulfillment dominate. Wishlist-related themes are tiny. Users rarely explicitly state why they abandoned a wishlist item in a review; instead, they complain about a bad experience (like complicated returns), which we infer is the root cause for their hesitation on future purchases.*")
+                
+    
+                st.subheader("Drill into a theme")
+                selected_theme = st.selectbox("Select a theme to explore", valid_ranking['display_name'].tolist())
+                
+                if selected_theme:
+                    original_tag = valid_ranking[valid_ranking['display_name'] == selected_theme]['hypothesis_tag'].iloc[0]
+                    theme_data = tagged[tagged['hypothesis_tag'] == original_tag]
+                    theme_pct = valid_ranking[valid_ranking['display_name'] == selected_theme]['percentage_of_total'].iloc[0]
+                    
+                    t1, t2, t3, t4 = st.columns(4)
+                    with t1:
+                        st.metric("Share of reviews", f"{theme_pct:.1f}%")
+                    with t2:
+                        st.metric("Play Store", len(theme_data[theme_data['source'] == 'play_store']))
+                    with t3:
+                        st.metric("App Store", len(theme_data[theme_data['source'] == 'app_store']))
+                    with t4:
+                        st.metric("Reddit", len(theme_data[theme_data['source'] == 'reddit']))
+                        
+        
+                    st.markdown(f"**Representative voices for '{selected_theme}'**")
+                    sample_reviews = theme_data['text'].dropna().sample(min(5, len(theme_data)), random_state=42).tolist()
+                    for txt in sample_reviews:
+                        st.markdown(f"> \"{txt}\"")
+
+    elif selection == "Methodology":
+        st.header("Methodology")
         
         st.write("This engine is powered by a multi-stage NLP pipeline designed to extract meaning from chaotic unstructured text.")
         
@@ -569,6 +675,8 @@ try:
             </ul>
         </div>
         """, unsafe_allow_html=True)
+        
+    st.markdown("<p style='text-align: center; color: #9CA3AF; font-size: 12px; margin-top: 60px;'>MyntraLens · built for a NextLeap Growth PM case study · data is user-generated app-store & social feedback.</p>", unsafe_allow_html=True)
 
 except Exception as e:
     st.error(f"Error loading system data: {e}")
