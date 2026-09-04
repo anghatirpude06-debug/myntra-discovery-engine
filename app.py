@@ -551,7 +551,6 @@ try:
             * **Returns & Refunds are the real conversion killer:** Fixing the cart experience won't help if users are deterred by return anxiety before they even add to cart.
             * **Trust signals are missing:** Users need authenticity guarantees and transparent return policies visible *within* the wishlist itself.
             * **Sizing uncertainty creates friction:** Predictive sizing would give users the confidence to move items from wishlist to cart.
-            * **This is a hypothesis to validate in interviews, not a conclusion — reviews can't observe wishlist abandonment directly.**
             """)
             
 
